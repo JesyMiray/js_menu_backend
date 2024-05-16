@@ -68,6 +68,24 @@ app.delete("/dishes/:id", async function(req, res) {
 	res.send(result);
 });
 
+// Update a category
+app.patch("/categories/:id", async function(req, res) {
+	const collection = await getDbCollection("mongodb://127.0.0.1", "restaurantapp", "categories");
+	const result = await collection.updateOne(
+		{ _id: new ObjectId(req.params.id) },
+		{ $set: { name: req.body.name } }
+	);
+	res.send(result);
+});
+
+// Delete a category
+app.delete("/categories/:id", async function(req, res) {
+	const collection = await getDbCollection("mongodb://127.0.0.1", "restaurantapp", "categories");
+	const result = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+	res.send(result);
+});
+
 app.listen(port, function() {
 	console.log(`Server started on port ${port}!`);
 });
+
